@@ -8,7 +8,15 @@ FILENAME = "shopping_list.json"
 
 # Define function to display menu options
 def display_menu():
-    pass
+    print("\nShopping List Menu:")
+    print("1. Add item")
+    print("2. View list")
+    print("3. Mark item as purchased")
+    print("4. Remove item")
+    print("5. Save and exit")
+    print("6. Load shopping list from file")
+    print("7. Exit without saving")
+
 
 # Define function to add items to the list (name, quantity, category, price, and if purchased)
 
