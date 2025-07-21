@@ -1,21 +1,28 @@
 import random
 import json
 
-shopping_list = []
+# Constant variables
 FILENAME = "shopping_list.json"
+DISCOUNT_CHANCE = 0.3 # 30% chance of a random discount
+DISCOUNT_PERCENT = 15 # 15% discount
 
+# Initialize shopping list as an empty list
+shopping_list = []
 
 
 # Define function to display menu options
 def display_menu():
+    """Display main menu options"""
     print("\nShopping List Menu:")
     print("1. Add item")
     print("2. View list")
     print("3. Mark item as purchased")
     print("4. Remove item")
-    print("5. Save and exit")
-    print("6. Load shopping list from file")
-    print("7. Exit without saving")
+    print("5. Generate category summary")
+    print("6. Save and exit")
+    print("7. Load shopping list from file")
+    print("8. Exit without saving")
+
 
 
 # Define function to add items to the list (name, quantity, category, price, and if purchased)
@@ -104,48 +111,79 @@ def remove_item():
     if not shopping_list:
         print("Shopping list is empty.")
         return
+    print("Items in the shopping list: ")
+
     
     view_list()
     try:
-        item_index = int(input("Enter the index of the item to remove: ") -1)
-        if item_index < 0 or item_index > len(shopping_list):
-            print("Invalid item index.")
-            return
-            removed_item = shopping_list.pop(item_index)
-            print(f"Item: {removed_item['name']} has sucessfully been removed from shopping list.")
+        item_index = int(input("Enter the index of the item to remove: "))
+        if 1 <= item_index <= len(shopping_list):
+            removed_item = shopping_list.pop(item_index - 1)
+            print(f"Item '{removed_item['name']}' removed from the shopping list.")
     except ValueError:
         print("Invalid input. Please enter a number.")
+
+# Define function to generate a summary of items by category
+def generate_category_summary():
+    if not shopping_list:
+        print("\nShopping list is empty.")
+        return
     
-    view_list()
-    pass
-    try:
-        item_index = int(input("Enter the index of the item to remove: ") -1)
-        if item_index < 0 or item_index > len(shopping_list):
-            print("Invalid item index.")
-            return
-            removed_item = shopping_list.pop(item_index)
-            print(f"Item: {removed_item['name']} has sucessfully been removed from shopping list.")
-    except ValueError:
-        print("Invalid input. Please enter a number.")
+    category_dict = {}
+    for item in shopping_list:
+        cat = item["category"]
+        if cat not in category_dict:
+            category_dict[cat] = {
+                "count": 0,
+                "total_cost": 0,
+                "purchased": 0
+            }
+        
+        category_dict[cat]["count"] += 1
+        category_dict[cat]["total_cost"] += item["price"] * item["quantity"]
+        if item["purchased"]:
+            category_dict[cat]["purchased"] += 1
+
+# Display summary
+    print("\nCategory Summary:")
+    print("-" * 50)
+    for category, data in category_dict.items():
+        print(f"Category: {category}")
+        print(f"  Count: {data['count']}")
+        print(f"  Total Cost: ${data['total_cost']:.2f}")
+        print(f"  Purchased: {data['purchased']}")
+        print("-" * 50)
+
 
 
 # Define function to save list as a JSON file
 def save_list():
-    with open("/Users/erekofke/Desktop/shopping_list.txt", 'w') as file:
-        json.dump(shopping_list, file)
-        print("Shopping list saved to file.")
+        try:
+            with open(FILENAME, 'w') as file:
+                json.dump(shopping_list, file)
+                print(f"\nShopping list saved to {FILENAME}.")
+        except FileNotFoundError:
+            print("\nNo saved list found.")
+    
 
 # Define a function to load the shopping list from a JSON file
 def load_list():
-    with open("/Users/erekofke/Desktop/shopping_list.txt", 'r') as file:
+    with open(FILENAME, 'r') as file:
         global shopping_list
         shopping_list = json.load(file)
-        print("Shopping list loaded from file.")
+        print(F"Shopping list loaded from {FILENAME}")
 
 
 # Define main function to run program loop
-
+# Print decorative header
 def main():
+    print("\n" + "=" * 50)
+    print("Welcome to the Shopping List Manager!")
+    print("=" * 50)
+
+    # Load existing shopping list if available
+    load_list()
+
     while True:
         display_menu()
         choice = input("Choose an option: ").strip().lower()
@@ -158,16 +196,18 @@ def main():
         elif choice == "4":
             remove_item()
         elif choice == "5":
-            save_list()
-            print("Shopping list saved, exiting program.")
+            generate_category_summary()
         elif choice == "6":
-            load_list()
+            save_list()
+            print("\nExiting program. Goodbye!")
+            break
         elif choice == "7":
-            print("Exiting without saving.")
+            load_list()
+        elif choice == "8":
+            print("\nExiting without saving. Goodbye!")
             break
         else:
-            print("Invalid choice. Please try again.")
-            break
+            print("Invalid option. Please choose 1-8")
 
 
 if __name__ == "__main__":
