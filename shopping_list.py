@@ -131,11 +131,16 @@ def remove_item():
 
 # Define function to save list as a JSON file
 def save_list():
-    pass
+    with open("/Users/erekofke/Desktop/shopping_list.txt", 'w') as file:
+        json.dump(shopping_list, file)
+        print("Shopping list saved to file.")
 
 # Define a function to load the shopping list from a JSON file
 def load_list():
-    pass
+    with open("/Users/erekofke/Desktop/shopping_list.txt", 'r') as file:
+        global shopping_list
+        shopping_list = json.load(file)
+        print("Shopping list loaded from file.")
 
 
 # Define main function to run program loop
