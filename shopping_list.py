@@ -21,7 +21,47 @@ def display_menu():
 # Define function to add items to the list (name, quantity, category, price, and if purchased)
 
 def add_item():
-    pass
+    item_name = input("Enter item name: ").strip()
+    if not item_name:
+        print("Item name cannot be empty.")
+        return
+    
+    quantity = input("Enter item quantity ").strip()
+    if not quantity.isdigit():
+        print("Quantity must be a number.")
+        return
+    quantity = int(quantity)
+
+
+    category = input("Enter item category: ").strip()
+    if not category:
+        print("Category cannot be empty.")
+        return
+    
+    price = input("Enter item price: ").strip()
+    try:
+        price = float(price)
+    except ValueError:
+        print("Price must be a number.")
+        return
+    
+    purchased = input("Is the item purchased (y/n)? ").strip().lower()
+    if purchased not in ('y', 'n'):
+        print("Invalid input for purchased status. Please enter 'y' or 'n'.")
+        return
+    purchased = purchased == 'y'
+
+    item = {
+        "name": item_name,
+        "quantity": quantity,
+        "category": category,
+        "price": price,
+        "purchased": purchased
+    }
+
+    shopping_list.append(item)
+    print(f"Item: {item_name} added to the shopping list.")
+    print(shopping_list)
     
     
 
