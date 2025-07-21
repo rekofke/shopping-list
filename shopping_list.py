@@ -52,6 +52,12 @@ def add_item():
         print("Price must be a number.")
         return
     
+# use random module to apply a random discount 
+# if random.random() < DISCOUNT_CHANCE:
+#     original_price = price
+#     price = round(price * (1 - DISCOUNT_PERCENT / 100), 2)
+#     print(f"Discount applied! Original price: ${original_price}, New price: ${price}")
+    
     purchased = input("Is the item purchased (y/n)? ").strip().lower()
     if purchased not in ('y', 'n'):
         print("Invalid input for purchased status. Please enter 'y' or 'n'.")
@@ -69,6 +75,8 @@ def add_item():
     shopping_list.append(item)
     print(f"Item: {item_name} added to the shopping list.")
     print(shopping_list)
+
+
     
     
 
