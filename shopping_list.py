@@ -70,14 +70,33 @@ def add_item():
 # Define function to view the current shopping list
 
 def view_list():
-    pass
-        
+    if not shopping_list:
+        print("Shopping list is empty.")
+        return
+    
+    print("\nCurrent Shopping List:")
+    for index, item in enumerate(shopping_list, start=1):
+        status = "Purchased" if item["purchased"] else "Not Purchased"
+        print(f"{index}. Name: {item['name']}, Quantity: {item['quantity']}, Category: {item['category']}, price: ${item['price']}, status: {status}")
 
 
 # Define function to Mark items as purchased
 
 def mark_item_purchased():
-    pass
+    if not shopping_list:
+        print("Item not in shopping list.")
+        return
+    view_list()
+    try:
+        item_index = int(input("Enter the inex of the item to mark as purchased: ")) -1
+        if item_index < 0 or item_index >= len(shopping_list):
+            print("Invalid item index.")
+            return
+        shopping_list[item_index]["purchased"] = True
+        print(f"Item: {shopping_list[item_index]['name']} marked as purchased.")
+    
+    except ValueError:
+        print("Invalid input. Please enter a number.")
 
 
 # Define function to remove items from the list
