@@ -101,7 +101,20 @@ def mark_item_purchased():
 
 # Define function to remove items from the list
 def remove_item():
-    pass
+    if not shopping_list:
+        print("Shopping list is empty.")
+        return
+    
+    view_list()
+    try:
+        item_index = int(input("Enter the index of the item to remove: ") -1)
+        if item_index < 0 or item_index > len(shopping_list):
+            print("Invalid item index.")
+            return
+            removed_item = shopping_list.pop(item_index)
+            print(f"Item: {removed_item['name']} has sucessfully been removed from shopping list.")
+    except ValueError:
+        print("Invalid input. Please enter a number.")
     
     view_list()
     pass
