@@ -1,18 +1,19 @@
 import random
 import json
 
-# Constant variables
+#* Constant variables
 FILENAME = "shopping_list.json"
-DISCOUNT_CHANCE = 0.3 # 30% chance of a random discount
-DISCOUNT_PERCENT = 15 # 15% discount
+#* Constants for discount feature (commented out for now)
+# DISCOUNT_CHANCE = 0.3 # 30% chance of a random discount
+# DISCOUNT_PERCENT = 15 # 15% discount
 
-# Initialize shopping list as an empty list
+#* Initialize shopping list as an empty list
 shopping_list = []
 
 
-# Define function to display menu options
+#* Define function to display menu options
 def display_menu():
-    """Display main menu options"""
+   
     print("\nShopping List Menu:")
     print("1. Add item")
     print("2. View list")
@@ -25,7 +26,7 @@ def display_menu():
 
 
 
-# Define function to add items to the list (name, quantity, category, price, and if purchased)
+#* Define function to add items to the list (name, quantity, category, price, and if purchased)
 
 def add_item():
     item_name = input("Enter item name: ").strip()
@@ -46,13 +47,11 @@ def add_item():
         return
     
     price = input("Enter item price: ").strip()
-    try:
-        price = float(price)
-    except ValueError:
-        print("Price must be a number.")
-        return
     
-# use random module to apply a random discount 
+    price = float(price)
+    
+    
+#* use random module to apply a random discount 
 # if random.random() < DISCOUNT_CHANCE:
 #     original_price = price
 #     price = round(price * (1 - DISCOUNT_PERCENT / 100), 2)
@@ -76,13 +75,8 @@ def add_item():
     print(f"Item: {item_name} added to the shopping list.")
     print(shopping_list)
 
-
     
-    
-
-
-    
-# Define function to view the current shopping list
+#* Define function to view the current shopping list
 
 def view_list():
     if not shopping_list:
@@ -95,26 +89,25 @@ def view_list():
         print(f"{index}. Name: {item['name']}, Quantity: {item['quantity']}, Category: {item['category']}, price: ${item['price']}, status: {status}")
 
 
-# Define function to Mark items as purchased
+#* Define function to Mark items as purchased
 
 def mark_item_purchased():
     if not shopping_list:
         print("Item not in shopping list.")
         return
     view_list()
-    try:
-        item_index = int(input("Enter the inex of the item to mark as purchased: ")) -1
-        if item_index < 0 or item_index >= len(shopping_list):
-            print("Invalid item index.")
-            return
-        shopping_list[item_index]["purchased"] = True
-        print(f"Item: {shopping_list[item_index]['name']} marked as purchased.")
     
-    except ValueError:
-        print("Invalid input. Please enter a number.")
+    item_index = int(input("Enter the inex of the item to mark as purchased: ")) -1
+    if item_index < 0 or item_index >= len(shopping_list):
+        print("Invalid item index.")
+        return
+    shopping_list[item_index]["purchased"] = True
+    print(f"Item: {shopping_list[item_index]['name']} marked as purchased.")
+    
+    
 
 
-# Define function to remove items from the list
+#* Define function to remove items from the list
 def remove_item():
     if not shopping_list:
         print("Shopping list is empty.")
@@ -123,15 +116,14 @@ def remove_item():
 
     
     view_list()
-    try:
-        item_index = int(input("Enter the index of the item to remove: "))
-        if 1 <= item_index <= len(shopping_list):
-            removed_item = shopping_list.pop(item_index - 1)
-            print(f"Item '{removed_item['name']}' removed from the shopping list.")
-    except ValueError:
-        print("Invalid input. Please enter a number.")
+    
+    item_index = int(input("Enter the index of the item to remove: "))
+    if 1 <= item_index <= len(shopping_list):
+        removed_item = shopping_list.pop(item_index - 1)
+        print(f"Item '{removed_item['name']}' removed from the shopping list.")
+    
 
-# Define function to generate a summary of items by category
+#* Define function to generate a summary of items by category
 def generate_category_summary():
     if not shopping_list:
         print("\nShopping list is empty.")
@@ -152,7 +144,7 @@ def generate_category_summary():
         if item["purchased"]:
             category_dict[cat]["purchased"] += 1
 
-# Display summary
+#* Display summary
     print("\nCategory Summary:")
     print("-" * 50)
     for category, data in category_dict.items():
@@ -164,32 +156,31 @@ def generate_category_summary():
 
 
 
-# Define function to save list as a JSON file
+#* Define function to save list as a JSON file
 def save_list():
-        try:
-            with open(FILENAME, 'w') as file:
-                json.dump(shopping_list, file)
-                print(f"\nShopping list saved to {FILENAME}.")
-        except FileNotFoundError:
-            print("\nNo saved list found.")
+        
+        with open(FILENAME, 'w') as file:
+            json.dump("/Users/erekofke/Desktop/shopping_list.txt", file)
+            print(f"\nShopping list saved to {FILENAME}.")
+        
     
 
-# Define a function to load the shopping list from a JSON file
+#* Define a function to load the shopping list from a JSON file
 def load_list():
-    with open(FILENAME, 'r') as file:
+    with open("/Users/erekofke/Desktop/shopping_list.txt", 'r') as file:
         global shopping_list
         shopping_list = json.load(file)
         print(F"Shopping list loaded from {FILENAME}")
 
 
-# Define main function to run program loop
-# Print decorative header
+#* Define main function to run program loop
+#* Print decorative header
 def main():
     print("\n" + "=" * 50)
     print("Welcome to the Shopping List Manager!")
     print("=" * 50)
 
-    # Load existing shopping list if available
+    #* Load existing shopping list if available
     load_list()
 
     while True:
